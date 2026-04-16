@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polola — La plata en pareja, sin peleas ni Excel</title>
+  <meta name="description" content="Polola es la app que organiza gastos compartidos, equilibra quién debe qué y los ayuda a cumplir metas juntos." />
+  <meta property="og:title" content="Polola — La plata en pareja, sin peleas ni Excel" />
+  <meta property="og:description" content="La fintech de parejas hispanohablantes. Anotate para acceso anticipado." />
+  <meta property="og:url" content="https://polola.app" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #FAF8F2;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 32px;
+      border-bottom: 0.5px solid rgba(0,0,0,0.1);
+      background: #FAF8F2;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 34px; height: 34px;
+      background: #F5C842;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-name {
+      font-size: 19px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav-links a {
+      font-size: 14px;
+      color: #555;
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: #1a1a1a; }
+
+    /* BUTTONS */
+    .btn-primary {
+      display: inline-block;
+      background: #F5C842;
+      color: #1a1a1a;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 13px 26px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-outline {
+      display: inline-block;
+      background: transparent;
+      color: #1a1a1a;
+      font-weight: 500;
+      font-size: 15px;
+      padding: 12px 26px;
+      border-radius: 50px;
+      border: 1.5px solid #1a1a1a;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-outline:hover { background: rgba(0,0,0,0.05); }
+
+    /* SECTIONS */
+    .section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 72px 24px;
+    }
+    .section-sm {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+    .divider {
+      height: 0.5px;
+      background: rgba(0,0,0,0.1);
+      margin: 0 24px;
+    }
+    .pill {
+      display: inline-block;
+      background: #F5C842;
+      color: #7a5a00;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 50px;
+      margin-bottom: 16px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+    .hero h1 {
+      font-size: clamp(34px, 6vw, 56px);
+      font-weight: 700;
+      line-height: 1.12;
+      color: #1a1a1a;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: #c9970a; }
+    .hero p {
+      font-size: 17px;
+      color: #555;
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.65;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero-fine {
+      font-size: 12px;
+      color: #999;
+      margin-top: 14px;
+    }
+
+    /* STATS */
+    .stats {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+    .stat-item { flex: 1; min-width: 120px; }
+    .stat-num {
+      font-size: 40px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: #888;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+    .stat-divider {
+      width: 0.5px;
+      background: rgba(0,0,0,0.1);
+      align-self: stretch;
+    }
+
+    /* FEATURES */
+    .features {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+    .feature-row {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .feature-icon {
+      width: 48px; height: 48px;
+      background: #F5C842;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .feature-text h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 6px;
+    }
+    .feature-text p {
+      font-size: 15px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* PRICING */
+    .pricing-grid {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .price-card {
+      flex: 1;
+      min-width: 240px;
+      background: #fff;
+      border: 0.5px solid rgba(0,0,0,0.12);
+      border-radius: 18px;
+      padding: 28px;
+    }
+    .price-card.featured {
+      background: #1a1a1a;
+      border: none;
+    }
+    .price-card.featured .plan-name,
+    .price-card.featured .price-amount,
+    .price-card.featured .price-period,
+    .price-card.featured .price-sub,
+    .price-card.featured .check-label { color: #fff; }
+    .price-card.featured .check-dot { background: #F5C842; }
+    .price-card.featured .check-dot svg path { stroke: #1a1a1a; }
+    .featured-badge {
+      display: inline-block;
+      background: #F5C842;
+      color: #7a5a00;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .plan-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #888;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .price-amount {
+      font-size: 36px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1;
+    }
+    .price-period {
+      font-size: 14px;
+      color: #888;
+      margin-left: 4px;
+    }
+    .price-sub {
+      font-size: 12px;
+      color: #bbb;
+      margin-top: 4px;
+      margin-bottom: 24px;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .check-dot {
+      width: 20px; height: 20px;
+      background: #F5C842;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .check-label {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    /* WAITLIST */
+    .waitlist-box {
+      text-align: center;
+    }
+    .waitlist-box h2 {
+      font-size: 30px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 12px;
+    }
+    .waitlist-box p {
+      font-size: 15px;
+      color: #666;
+      max-width: 400px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+    .email-form {
+      display: flex;
+      gap: 10px;
+      max-width: 440px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+    .email-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 14px 20px;
+      border-radius: 50px;
+      border: 1.5px solid rgba(0,0,0,0.15);
+      font-size: 15px;
+      background: #fff;
+      color: #1a1a1a;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .email-input:focus { border-color: #F5C842; }
+    .email-input.error { border-color: #E24B4A; }
+    .form-fine {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 12px;
+    }
+    .toast {
+      display: none;
+      background: #1a1a1a;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 14px;
+      margin-top: 14px;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 0.5px solid rgba(0,0,0,0.1);
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-logo {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .footer-logo span { font-size: 13px; color: #888; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a {
+      font-size: 13px;
+      color: #aaa;
+      text-decoration: none;
+    }
+    .footer-links a:hover { color: #555; }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .nav-links a:not(.btn-primary) { display: none; }
+      .section { padding: 56px 20px; }
+      .section-sm { padding: 36px 20px; }
+      .stats { gap: 24px; }
+      .stat-divider { display: none; }
+      .pricing-grid { flex-direction: column; }
+      footer { padding: 20px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="logo">
+      <div class="logo-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M12 21C12 21 3 14 3 8.5C3 5.46 5.46 3 8.5 3C10.24 3 11.79 3.84 12 4C12.21 3.84 13.76 3 15.5 3C18.54 3 21 5.46 21 8.5C21 14 12 21 12 21Z" fill="#1a1a1a"/>
+        </svg>
+      </div>
+      <span class="logo-name">Polola</span>
+    </a>
+    <div class="nav-links">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#precios">Precios</a>
+      <a href="#waitlist" class="btn-primary" style="padding:10px 20px;font-size:14px;">Quiero probarla</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="section hero">
+    <div class="pill">Próximamente en Argentina, Chile y México</div>
+    <h1>La plata en pareja,<br><span>sin peleas</span> ni Excel.</h1>
+    <p>Polola es la app que organiza gastos compartidos, equilibra quién debe qué y los ayuda a cumplir metas juntos.</p>
+    <div class="hero-cta">
+      <a href="#waitlist" class="btn-primary">Anotarme gratis</a>
+      <a href="#como-funciona" class="btn-outline">Ver cómo funciona</a>
+    </div>
+    <p class="hero-fine">Sin tarjeta. Sin compromisos. Solo para los primeros.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- STATS -->
+  <div class="section-sm">
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-num">7/10</div>
+        <div class="stat-label">parejas discuten<br>por dinero</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num">+60M</div>
+        <div class="stat-label">parejas hispanohablantes<br>sin solución</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num">$0</div>
+        <div class="stat-label">para empezar<br>hoy mismo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FEATURES -->
+  <div id="como-funciona" class="section">
+    <div class="pill">Cómo funciona</div>
+    <h2 style="font-size:28px;font-weight:700;color:#1a1a1a;margin-bottom:40px;">Todo lo que necesitan como equipo</h2>
+    <div class="features">
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="18" height="18" rx="5" fill="#1a1a1a"/>
+            <path d="M7 12h10M12 7v10" stroke="#F5C842" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="feature-text">
+          <h3>Una sola vista compartida</h3>
+          <p>Los dos ven los mismos números en tiempo real. Tarjeta, transferencia o efectivo — todo queda registrado sin que ninguno se pierda nada.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="8" cy="12" r="5" fill="#1a1a1a"/>
+            <circle cx="16" cy="12" r="5" fill="#1a1a1a" opacity="0.35"/>
+            <path d="M10 10l4 4M14 10l-4 4" stroke="#F5C842" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="feature-text">
+          <h3>Reparto justo, sin drama</h3>
+          <p>Polola calcula quién debe qué y sugiere cómo equilibrar la cuenta. Sin planilla, sin negociaciones incómodas, sin que quede mal ninguno.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3L14.5 8.5L21 9.27L16.5 13.64L17.76 20L12 17L6.24 20L7.5 13.64L3 9.27L9.5 8.5L12 3Z" fill="#1a1a1a"/>
+          </svg>
+        </div>
+        <div class="feature-text">
+          <h3>Metas que cumplen juntos</h3>
+          <p>Alcancías para el viaje, el depa, el auto o lo que sueñen. Barra de progreso y recordatorios para los dos. Los sueños compartidos se cumplen más fácil.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PRICING -->
+  <div id="precios" class="section">
+    <div class="pill">Precios</div>
+    <h2 style="font-size:28px;font-weight:700;color:#1a1a1a;margin-bottom:8px;">Empezá gratis, crecé juntos</h2>
+    <p style="font-size:15px;color:#666;margin-bottom:36px;">Los primeros en unirse consiguen precio especial para siempre.</p>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="plan-name">Gratis</div>
+        <div>
+          <span class="price-amount">$0</span>
+        </div>
+        <div class="price-sub">Para siempre</div>
+        <div class="check-item">
+          <div class="check-dot"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></div>
+          <span class="check-label">Registro de gastos compartidos</span>
+        </div>
+        <div class="check-item">
+          <div class="check-dot"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></div>
+          <span class="check-label">Balance de quién debe qué</span>
+        </div>
+        <div class="check-item">
+          <div class="check-dot"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></div>
+          <span class="check-label">Hasta 2 metas compartidas</span>
+        </div>
+      </div>
+
+      <div class="price-card featured">
+        <div class="featured-badge">Más popular</div>
+        <div class="plan-name">Polola Plus</div>
+        <div>
+          <span class="price-amount">USD 4</span>
+          <span class="price-period">/mes por pareja</span>
+        </div>
+        <div class="price-sub">Precio early adopter — se mantiene para siempre</div>
+        <div class="check-item">
+          <div class="check-dot"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></div>
+          <span class="check-label">Todo lo del plan gratis</span>
+        </div>
+        <div class="check-item">
+          <div class="check-dot"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></div>
+          <span class="check-label">Metas ilimitadas</span>
+        </div>
+        <div class="check-item">
+          <div class="check-dot"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></div>
+          <span class="check-label">Estadísticas y tendencias</span>
+        </div>
+        <div class="check-item">
+          <div class="check-dot"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></div>
+          <span class="check-label">Cuenta compartida <span style="opacity:0.5;">(pronto)</span></span>
+        </div>
+        <div class="check-item">
+          <div class="check-dot"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></div>
+          <span class="check-label">Tarjeta de pareja <span style="opacity:0.5;">(pronto)</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WAITLIST -->
+  <div id="waitlist" class="section waitlist-box">
+    <div class="pill">Acceso anticipado</div>
+    <h2>Sé de los primeros</h2>
+    <p>Anotate ahora y conseguís precio especial de por vida + acceso antes que nadie.</p>
+    <div class="email-form">
+      <input class="email-input" type="email" id="email-input" placeholder="tu@email.com" />
+      <button class="btn-primary" onclick="handleSubmit()">Anotarme</button>
+    </div>
+    <div class="toast" id="toast">Listo, te avisamos cuando abramos. Gracias.</div>
+    <p class="form-fine">Sin spam. Te avisamos cuando abramos.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <div class="logo-mark" style="width:26px;height:26px;border-radius:8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path d="M12 21C12 21 3 14 3 8.5C3 5.46 5.46 3 8.5 3C10.24 3 11.79 3.84 12 4C12.21 3.84 13.76 3 15.5 3C18.54 3 21 5.46 21 8.5C21 14 12 21 12 21Z" fill="#1a1a1a"/>
+        </svg>
+      </div>
+      <span>Polola © 2025</span>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacidad</a>
+      <a href="#">Términos</a>
+      <a href="mailto:fernandezcamiladaniela@gmail.com">Contacto</a>
+    </div>
+  </footer>
+
+  <script>
+    function handleSubmit() {
+      const input = document.getElementById('email-input');
+      const toast = document.getElementById('toast');
+      const val = input.value.trim();
+      if (!val || !val.includes('@') || !val.includes('.')) {
+        input.classList.add('error');
+        setTimeout(() => input.classList.remove('error'), 1500);
+        return;
+      }
+      toast.style.display = 'block';
+      input.value = '';
+      input.disabled = true;
+    }
+    document.getElementById('email-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleSubmit();
+    });
+  </script>
+</body>
+</html>
